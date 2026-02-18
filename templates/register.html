@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="text-center mb-4">Register</h2>
+
+<div class="row justify-content-center">
+  <div class="col-md-4">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+          {{ message }}
+          <button class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="card shadow">
+      <div class="card-body">
+
+        <!-- ✅ EMAIL REGISTER -->
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">
+            Register
+          </button>
+        </form>
+
+        <!-- 🔽 DIVIDER -->
+        <div class="text-center my-3 text-muted">
+          or
+        </div>
+
+        <!-- 🔴 GOOGLE (UI ONLY) -->
+        <button class="btn btn-outline-danger w-100 mb-2">
+          Continue with Google
+        </button>
+
+        <!-- 🟦 GITHUB (OPTIONAL UI) -->
+        <button class="btn btn-outline-dark w-100 mb-2">
+          Continue with GitHub
+        </button>
+
+        <p class="text-center mt-3">
+          Already have an account?
+          <a href="{% url 'login' %}">Login</a>
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

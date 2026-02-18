@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col">
+      <h2 class="fw-bold text-danger">
+        Admin Dashboard
+      </h2>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-bg-primary shadow">
+        <div class="card-body text-center">
+          <h3>{{ total_users }}</h3>
+          <p class="mb-0">Total Users</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-bg-success shadow">
+        <div class="card-body text-center">
+          <h3>{{ total_blogs }}</h3>
+          <p class="mb-0">Total Blogs</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card text-bg-warning shadow">
+        <div class="card-body text-center">
+          <h3>{{ total_comments }}</h3>
+          <p class="mb-0">Total Comments</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="card shadow">
+    <div class="card-header bg-dark text-white">
+      Users Overview
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Blogs</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.blog_set.count }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

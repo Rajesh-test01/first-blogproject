@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block header %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <!-- 🔍 SEARCH FORM -->
+      <!-- <form class="d-flex" role="search" method="get" action="">
+        <input 
+            class="form-control me-2"
+            type="search" 
+            name="q"
+            placeholder="Search"
+            value="{{ request.GET.q|default:'' }}"
+        >
+        <button class="btn btn-outline-success" type="submit">
+            Search
+        </button>
+      </form> -->
+
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+
+
+{% if blogs %}
+    <div class="row">
+        {% for blog in blogs %}
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-3">
+                <div class="card h-100" style="width: 18rem;">
+
+                    {% if blog.image %}
+                        <img 
+                            src="{{ blog.image.url }}" 
+                            class="card-img-top" 
+                            alt="{{ blog.title }}"
+                        >
+                    {% endif %}
+
+                    <div class="card-body">
+                        <small class="mt-2 mb-1">
+                            {{ blog.created_at|date:"d M Y H:i" }}
+                        </small>
+                         <p class="mt-2 mb-1">
+                            {{ blog.category.name }}
+                        </p>
+
+                        <h5 class="card-title">
+                            {{ blog.title|title }}
+                        </h5>
+
+                        <p class="card-text">
+                            {{ blog.short_desc|truncatechars:100 }}
+                        </p>
+
+                      <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- LEFT SIDE -->
+                            <a href="{% url 'blog_detail' blog.id %}" class="btn btn-primary btn-sm">
+                                Read more
+                            </a>
+
+                            <!-- RIGHT SIDE -->
+                            <span class="text-muted">
+                                💬 {{ blog.comments.count }}
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No blogs found.</p>
+{% endif %}
+
+
+<nav class="mt-5">
+  <ul class="pagination justify-content-center">
+
+    {% if blogs.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ blogs.previous_page_number }}">Previous</a>
+      </li>
+    {% endif %}
+
+
+    {% for num in blogs.paginator.page_range %}
+      {% if blogs.number == num %}
+        <li class="page-item active">
+          <span class="page-link">{{ num }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if blogs.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ blogs.next_page_number }}">Next</a>
+      </li>
+    {% endif %}
+
+  </ul>
+</nav>
+
+{% endblock %}

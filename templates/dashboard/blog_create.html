@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <!-- HEADER -->
+  <div class="row mb-4">
+    <div class="col">
+      <h2 class="fw-bold text-success">
+         Create New Blog
+      </h2>
+      <p class="text-muted">
+        Fill the details below to publish your blog
+      </p>
+    </div>
+    <div class="col text-end">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+        ← Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card shadow-lg border-0">
+    <div class="card-body p-4">
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- TITLE -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Blog Title</label>
+          {{ form.title }}
+          {% if form.title.errors %}
+            <div class="text-danger small">{{ form.title.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- SHORT DESCRIPTION -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Short Description</label>
+          {{ form.short_desc }}
+        </div>
+
+        <!-- CONTENT -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Content</label>
+          {{ form.content }}
+        </div>
+
+        <!-- IMAGE -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Blog Image</label>
+          {{ form.image }}
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Category</label>
+          {{ form.category }}
+        </div>
+
+        <!-- STATUS (OPTIONAL) -->
+        {% if form.status %}
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Status</label>
+          {{ form.status }}
+        </div>
+        {% endif %}
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-success px-4">
+             Save Blog
+          </button>
+
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-danger">
+             Cancel
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
