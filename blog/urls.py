@@ -20,7 +20,7 @@ urlpatterns = [
 
     # ================= AUTH =================
     path('login/', views.login_view, name='login'),
-    path('register_view/', views.register_view, name='register_view'),
+    # path('register_view/', views.register_view, name='register_view'),
     path('logout/', views.logout_view, name='logout'),
 
     # ================= BLOG PAGES =================

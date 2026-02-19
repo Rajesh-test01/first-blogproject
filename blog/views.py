@@ -16,6 +16,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.contrib.auth import logout
 from .forms import BlogForm
+from .models import LoginUser
 
 
 
@@ -151,63 +152,62 @@ def contact(request):
 
 
 def login_view(request):
-    if request.user.is_authenticated:
-       return redirect("dashboard")
 
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        user = authenticate(request, username=email, password=password)
+        user, created = User.objects.get_or_create(email=email)
 
-        if user is not None:
-            login(request, user)
-            next_url = request.GET.get("next")
-            return redirect(next_url if next_url else "dashboard")
+        if created:
+            user.set_password(password)
+            user.save()
 
-        else:
-            return render(request, "login.html", {
-                "error": "Invalid email or password"
-            })
+        # IMPORTANT: specify backend
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
-    # ==== (GET request)
+        LoginUser.objects.create(user=user)
+
+        return redirect("blog_list")
+
     return render(request, "login.html")
             
 
 
 # =======register=========
 
-def register_view(request):
-    if request.method =="POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
+# def register_view(request):
+#     if request.method =="POST":
+#         # username = request.POST.get("username")
+#         password = request.POST.get("password")
+#         email = request.POST.get("email")
    
-    #    ==username already exists=======
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "username already exists")
-            return redirect("register_view")
+#     #    ==username already exists=======
+#         # if User.objects.filter(username=username).exists():
+#         #    messages.error(request, "Username already taken")
+#         #    return redirect("register_view")
 
 
-    # ===email already exists====
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "email already exists")
-            return redirect("register_view")
+
+#     # ===email already exists====
+#         if User.objects.filter(email=email).exists():
+#             messages.error(request, "email already exists")
+#             return redirect("register_view")
         
-        # ===create user===
+#         # ===create user===
 
-        User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
+#         User.objects.create_user(
+#             # username=username,
+#             email=email,
+#             password=password
+#         )
 
 
-        messages.success(request,"Registation successful. please join.")
-        return redirect("login")
+#         messages.success(request,"Registation successful. please join.")
+#         return redirect("login")
 
     
-    return render(request,"register.html")
+#     return render(request,"register.html")
 
 # ======= email view ( in footer)=====
 

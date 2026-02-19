@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Blog, Category , Contact , Comment
 from django.utils.html import format_html
-from .models import See_Our_Blogs
+from .models import Blog, Contact, See_Our_Blogs, Category, Comment
+from .models import LoginUser
+
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
@@ -20,12 +21,20 @@ class BlogAdmin(admin.ModelAdmin):
 
     image_preview.short_description = 'Image'
 
-    admin.site.register(Contact)
+
+admin.site.register(Contact)
+
 
 @admin.register(See_Our_Blogs)
 class SeeOurBlogsAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_at')
 
-admin.site.register(Category)
 
-admin.site.register(Comment)    
+admin.site.register(Category)
+admin.site.register(Comment)
+
+@admin.register(LoginUser)
+class LoginUserAdmin(admin.ModelAdmin):
+    list_display = ("user", "login_date")
+
+

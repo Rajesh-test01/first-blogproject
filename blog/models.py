@@ -80,3 +80,16 @@ class Comment(models.Model):
        
     def __str__(self):
       return f"{self.user.email} on {self.blog.title}"
+
+
+#   ========loginuser============
+
+class LoginUser(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+         on_delete=models.CASCADE
+        )
+    login_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.login_date}"
