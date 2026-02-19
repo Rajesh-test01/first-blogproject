@@ -31,7 +31,7 @@ def blog_list(request):
 def blog_detail(request, id):
     blog = get_object_or_404(Blog, id=id)
 
-    related_blogs = blog.object.filter(
+    related_blogs = blog.objects.filter(
         category = blog.category
     ).exclude(id=blog.id)[:4]      # 👈 same category, exclude current blog
 
